@@ -555,24 +555,34 @@ headheight=1.8cm]{geometry}
     \clearpage
 }
 
-
 \newcounter{apendicecount}
 \setcounter{apendicecount}{0}%
 
-\newcommand{\apendice}[2]{
+\makeatletter
+\newcommand{\labelapendice}[1]{%
+        \edef\@currentlabel{\MakeUppercase{\alph{apendicecount}}}%
+        \label{#1}%
+}
+\makeatother
+
+\newcommand{\apendice}[3][]{%
         \clearpage
         \stepcounter{apendicecount}%
         \ifnum\value{apendicecount}=1
-        \capaapendice{Appendices}
+                \capaapendice{Appendices}
         \fi
         \phantomsection
-        \addcontentsline{toc}{subsection}{\MakeUppercase{\alph{apendicecount}}\hspace{1em} #1}
+        \addcontentsline{toc}{section}{Appendix \MakeUppercase{\alph{apendicecount}} - #2}
         \begin{center}
-        {\color{fundo_idp}\Large{Appendix \MakeUppercase{\alph{apendicecount}} - {#1}}} 
-     
+                {\color{fundo_idp}\Large{Appendix \MakeUppercase{\alph{apendicecount}} - #2}}
         \end{center}
-        
-        \input{#2}
+        \ifx&#1&%
+                \edef\tempaplabel{ap:\alph{apendicecount}}%
+                \labelapendice{\tempaplabel}%
+        \else
+                \labelapendice{#1}%
+        \fi
+        \input{#3}
 }
 
 %% Anexos

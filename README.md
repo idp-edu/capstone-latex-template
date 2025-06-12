@@ -46,7 +46,7 @@ Os seguintes comandos foram definidos para facilitar a escrita do documento:
 * `\subsubsecao{Título}`
   Cria uma **subsubseção**.
 
-* `\apendice{Título}{caminho/arquivo.tex}`
+* `\apendice[ap:rotulo]{Título}{caminho/arquivo.tex}`
   Cria uma seção de **apêndices** (opcional).
 
 * `\anexo{Título}{caminho/arquivo.tex}`

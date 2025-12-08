@@ -16,12 +16,16 @@
 \ano{2025}
 
 % Usar orientador ou orientadora
-\orientador{Dr. Alan Turing}
+% - Argumento opcional caso o orientador seja de uma instituição diferente
+\orientador[IDP]{Dr. Alan Turing}
 %\orientadora{Dra. Ada Lovelace}
 
-% Para membros da banca, deve-se por o nome no primeiro parâmentro e se é examinador interno ou externo no segundo parâmetro
-\membrobancai{Dr. Dom Quixote de la Mancha}{Examinador interno}
-\membrobancaii{Dra. Anna Karienina}{Examinadora Externa}
+% Para membros da banca, são três argumentos obrigatórios:
+% 1 - Nome do membro avaliador
+% 2 - Se o mesmo é membro interno ou externo à instituição
+% 3 - Instituição a qual o membro está vinculado
+\membrobancai{Dr. Dom Quixote de la Mancha}{Internal Member}{IDP}
+\membrobancaii{Dra. Anna Karienina}{Internal Member}{IDP}
 
 \palavraschave{LaTeX, metodologia científica, trabalho de conclusão de curso, artigo, tecnologia}
 \keywords{{LaTeX, metodologia científica, trabalho de conclusão de curso, paper, technology}}

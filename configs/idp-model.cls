@@ -36,40 +36,81 @@ headheight=1.8cm]{geometry}
 \definecolor{fundo_idp}{HTML}{005DAA}
 \definecolor{titulos}{HTML}{00B3FF}
 
-\newcommand{\@nomecurso}{}
-% Comando para Ciência da Computação
-\newcommand{\cienciadacomputacao}{
-  \renewcommand{\@nomecurso}{Ciência da Computação}
+\makeatletter
+
+%% --- INÍCIO: macros seguras (sem @) ---
+% Curso
+\newcommand{\nomecurso}{} % valor por defeito vazio
+\newcommand{\cienciadacomputacao}{%
+  \renewcommand{\nomecurso}{Ciência da Computação}%
+}
+\newcommand{\engenhariadesoftware}{%
+  \renewcommand{\nomecurso}{Engenharia de Software}%
+}
+% Se precisar colocar em inglês
+\newcommand{\nomecursoingles}{} % valor por defeito vazio
+\newcommand{\computerscience}{%
+  \renewcommand{\nomecursoingles}{Computer Science}%
+}
+\newcommand{\softwareengineering}{%
+  \renewcommand{\nomecursoingles}{Software Engineering}%
 }
 
-% Comando para Engenharia de Software
-\newcommand{\engenhariadesoftware}{
-  \renewcommand{\@nomecurso}{Engenharia de Software}
-}
 
+
+% Título, autor, ano (já existiam; mantemos)
 \newcommand{\titulo}[1]{\def\titulonome{#1}}
 \newcommand{\autor}[1]{\def\autornome{#1}}
 \newcommand{\ano}[1]{\def\anonome{#1}}
 
-\newcommand{\@nomeorientador}{}
-\newif\iforientadora
-\newcommand{\orientador}[1]{
-\orientadorafalse
-\renewcommand{\@nomeorientador}{#1}}
-\newcommand{\orientadora}[1]{
-\renewcommand{\@nomeorientador}{#1}
-\orientadoratrue}
+% ORIENTADOR / ORIENTADORA
+\newcommand{\nomeorientador}{}        % nome do orientador(a)
+\newcommand{\instorientador}{IDP}    % instituição do orientador, padrão IDP
+\newif\iforientadora                 % flag: true = orientadora
+
+% Orientador (masculino) com argumento opcional [instituição]{nome}
+\newcommand{\orientador}[2][]{%
+  \orientadorafalse
+  \renewcommand{\nomeorientador}{#2}%
+  % se #1 vazio -> IDP, senão usa #1
+  \renewcommand{\instorientador}{\ifx\relax#1\relax IDP\else #1\fi}%
+}
+
+% Orientadora (feminino) com argumento opcional [instituição]{nome}
+\newcommand{\orientadora}[2][]{%
+  \orientadoratrue
+  \renewcommand{\nomeorientador}{#2}%
+  \renewcommand{\instorientador}{\ifx\relax#1\relax IDP\else #1\fi}%
+}
+
+% Membros da banca (nomes, função, instituição) — versões com 3 args
+\newcommand{\nomemembrobancai}{}   \newcommand{\funcaomembrobancai}{} \newcommand{\instbancai}{IDP}
+\newcommand{\nomemembrobancaii}{}  \newcommand{\funcaomembrobancaii}{} \newcommand{\instbancaii}{IDP}
+
+\newcommand{\membrobancai}[3]{%
+  \renewcommand{\nomemembrobancai}{#1}%
+  \renewcommand{\funcaomembrobancai}{#2}%
+  \renewcommand{\instbancai}{#3}%
+}
+
+\newcommand{\membrobancaii}[3]{%
+  \renewcommand{\nomemembrobancaii}{#1}%
+  \renewcommand{\funcaomembrobancaii}{#2}%
+  \renewcommand{\instbancaii}{#3}%
+}
+
+% Data de aprovação
+\newcommand{\dataaprovacaoVal}{} % valor físico
+\newcommand{\dataaprovacao}[1]{\renewcommand{\dataaprovacaoVal}{#1}}
+
+% Palavras-chave / keywords
+\newcommand{\palavraschaveVal}{} \newcommand{\keywordsVal}{}
+\newcommand{\palavraschave}[1]{\renewcommand{\palavraschaveVal}{#1}}
+\newcommand{\keywords}[1]{\renewcommand{\keywordsVal}{#1}}
+%% --- FIM: macros seguras (sem @) ---
 
 
-\newcommand{\membrobancai}[2]{\def\@nomemembrobancai{#1}
-\def\@funcaomembrobancai{#2}}
-\newcommand{\membrobancaii}[2]{\def\@nomemembrobancaii{#1}
-\def\@funcaomembrobancaii{#2}}
-
-\newcommand{\dataaprovacao}[1]{\def\@dataaprovacao{#1}}
-
-\newcommand{\palavraschave}[1]{\def\@palavraschave{#1}}
-\newcommand{\keywords}[1]{\def\@keywords{#1}}
+\makeatother
 
 \fancyhf{} % Limpa os cabeçalhos e rodapés padrão
 \renewcommand{\headrulewidth}{0pt} % Remove a linha do cabeçalho
@@ -129,7 +170,7 @@ headheight=1.8cm]{geometry}
     \begin{flushleft}
     {\Large\expandafter\MakeUppercase\expandafter{Bacharelado em}}\\
     \vspace*{0.2cm}
-    {\huge\bf\expandafter\MakeUppercase\expandafter{\@nomecurso}}
+    {\huge\bf\expandafter\MakeUppercase\expandafter{\nomecurso}}
 
     \vspace*{2.0 cm}
         \AddToShipoutPicture*{
@@ -164,16 +205,17 @@ headheight=1.8cm]{geometry}
 
         \vspace*{3cm}
  
-        \noindent{Trabalho de Conclusão de Curso apresentado como requisito parcial para a obtenção de grau de Bacharel em \@nomecurso, pelo Instituto Brasileiro de Ensino, Desenvolvimento e Pesquisa (IDP).}
-
+        \noindent{Undergraduate Thesis submitted in partial fulfillment of the
+        requirements for the degree of Bachelor of \nomecursoingles{} at the
+        Brazilian Institute of Education, Development and Research (IDP).}
 
         \vspace*{3cm}
 
         {\bfseries\color{fundo_idp}
-        \iforientadora Orientadora 
-        \else Orientador
+        \iforientadora Advisor
+        \else Advisor
         \fi}\\
-        {\@nomeorientador}
+        {\nomeorientador}
 
         \vspace*{3cm}
         {Brasília - DF, \anonome}
@@ -192,35 +234,34 @@ headheight=1.8cm]{geometry}
     \end{flushleft}
         \vspace*{2cm}
 
-       \noindent{Trabalho de Conclusão de Curso apresentado como requisito parcial para a obtenção de grau de Bacharel em \@nomecurso, pelo Instituto Brasileiro de Ensino, Desenvolvimento e Pesquisa (IDP).}
-
+        \noindent{Undergraduate Thesis submitted in partial fulfillment of the
+        requirements for the degree of Bachelor of \nomecursoingles{} at the
+        Brazilian Institute of Education, Development and Research (IDP).}
 
     \begin{flushleft}
 
         \vspace*{2cm}
-        {Aprovado em \@dataaprovacao}
+        {Approved on \dataaprovacaoVal}
 
         \vspace*{1cm}
-        {\bfseries\color{fundo_idp}Banca Examinadora}
+        {\bfseries\color{fundo_idp}Examining Committee}
         
         
         {
         \vspace*{2cm}
-        \rule{\linewidth}{0.4pt}
+        % \rule{\linewidth}{0.4pt}
         \vspace{1em}
-        {\@nomeorientador -  \iforientadora Orientadora 
-        \else Orientador
-        \fi}
+        {\nomeorientador\ (\iforientadora Advisor\else Advisor\fi) - \instorientador}
 
         \vspace*{2cm}
-        \rule{\linewidth}{0.4pt}
+        % \rule{\linewidth}{0.4pt}
         \vspace{1em}
-        {\@nomemembrobancai - \@funcaomembrobancai}
+        {\nomemembrobancai\ (\funcaomembrobancai) - \instbancai}
         
         \vspace*{2cm}
-        \rule{\linewidth}{0.4pt}
+        % \rule{\linewidth}{0.4pt}
         \vspace{1em}
-        {\@nomemembrobancaii - \@funcaomembrobancaii}
+        {\nomemembrobancaii\ (\funcaomembrobancaii) - \instbancaii}
         }
     \end{flushleft}
 }
@@ -252,7 +293,7 @@ headheight=1.8cm]{geometry}
     \vspace{1em}
      \begin{tcolorbox}[keywordsbox]
      \begin{center}
-        \color{fundo_idp}\textbf{Palavras-chave:} \color{fundo_idp}{\@palavraschave}.
+        \color{fundo_idp}\textbf{Palavras-chave:}\color{fundo_idp}{\palavraschaveVal}.
     \end{center}
     \end{tcolorbox}
 }
@@ -267,7 +308,7 @@ headheight=1.8cm]{geometry}
     \vspace{1em}
      \begin{tcolorbox}[keywordsbox]
         \begin{center}
-        \color{fundo_idp}\textbf{Keywords:} \color{fundo_idp}{\@keywords}.
+            \color{fundo_idp}\textbf{Keywords:} \color{fundo_idp}{\keywordsVal}.
         \end{center}
     \end{tcolorbox}
     \clearpage
